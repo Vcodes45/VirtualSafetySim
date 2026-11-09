@@ -1,0 +1,1 @@
+No trained model is included. The app uses a neutral fallback or explicitly unvalidated heuristic unless a compatible `cognitive_load_model.joblib` bundle is supplied. A model trained on synthetic demo data is not valid research evidence and must remain marked demo-only.

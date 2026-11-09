@@ -1,0 +1,578 @@
+{
+  "scenarios": [
+    {
+      "id": "office_fire",
+      "title": "Office Fire",
+      "description": "Recognise a fire warning, select a safe route, and reach the assembly point.",
+      "environment": "An office floor with a fire alarm, marked exits, smoke cues and a designated assembly point.",
+      "learningNote": "This is a simplified learning simulation, not a substitute for your premises' fire plan or professional training.",
+      "startDecisionId": "o1",
+      "decisions": [
+        {
+          "id": "o1",
+          "title": "You notice smoke and hear the fire alarm.",
+          "prompt": "What should you do first?",
+          "hint": "Leave promptly using the safe route in the premises plan. Do not delay for possessions or to investigate.",
+          "options": [
+            {
+              "id": "evacuate",
+              "label": "Raise the alarm if needed and begin evacuating by a safe marked route",
+              "score": 2,
+              "feedback": "Good decision: prioritise evacuation and follow the building's emergency plan.",
+              "nextDecisionId": "o2"
+            },
+            {
+              "id": "investigate",
+              "label": "Go toward the smoke to find the source",
+              "score": -1,
+              "feedback": "Investigating can delay escape and expose you to smoke. Prioritise the evacuation procedure.",
+              "nextDecisionId": "o1b"
+            },
+            {
+              "id": "belongings",
+              "label": "Collect your bag and laptop first",
+              "score": -1,
+              "feedback": "Do not delay evacuation to collect possessions.",
+              "nextDecisionId": "o1b"
+            }
+          ]
+        },
+        {
+          "id": "o1b",
+          "title": "You have lost time while the alarm is active.",
+          "prompt": "What is the safest next action?",
+          "hint": "Do not attempt to investigate or recover belongings. Follow the evacuation plan.",
+          "options": [
+            {
+              "id": "leave_now",
+              "label": "Stop the task and leave by a safe marked route",
+              "score": 2,
+              "feedback": "Correct: evacuate without further delay.",
+              "nextDecisionId": "o2"
+            },
+            {
+              "id": "continue_checking",
+              "label": "Check nearby rooms before leaving",
+              "score": -2,
+              "feedback": "Do not search rooms unless this is specifically part of your trained role and safe to do so.",
+              "nextDecisionId": "o2"
+            }
+          ]
+        },
+        {
+          "id": "o2",
+          "title": "You see an exit sign and a lift lobby.",
+          "prompt": "Which route should you choose?",
+          "hint": "Use a suitable, safe escape route. Ordinary lifts should not be used during a fire unless specifically designated by the building's evacuation plan.",
+          "options": [
+            {
+              "id": "marked_exit",
+              "label": "Follow the nearest safe marked emergency exit",
+              "score": 2,
+              "feedback": "Correct: use a safe escape route identified by the premises plan.",
+              "nextDecisionId": "o3"
+            },
+            {
+              "id": "lift",
+              "label": "Take the ordinary passenger lift",
+              "score": -2,
+              "feedback": "Ordinary lifts are generally not a fire escape route. Follow the building's plan.",
+              "nextDecisionId": "o3"
+            },
+            {
+              "id": "smoke_route",
+              "label": "Take the shortest route even though it is filled with smoke",
+              "score": -2,
+              "feedback": "Do not deliberately enter a smoke-filled route. Seek a safe alternative according to the emergency plan.",
+              "nextDecisionId": "o3"
+            }
+          ]
+        },
+        {
+          "id": "o3",
+          "title": "Smoke is gathering along one corridor.",
+          "prompt": "The direct corridor is smoky. What should you do?",
+          "hint": "Avoid entering dense smoke. Use a safe alternative route if one is available and identified by the emergency plan.",
+          "options": [
+            {
+              "id": "alternative",
+              "label": "Avoid the smoky corridor and use a known safe alternative route",
+              "score": 2,
+              "feedback": "Correct: do not knowingly move into a smoke-filled escape route.",
+              "nextDecisionId": "o4"
+            },
+            {
+              "id": "through_smoke",
+              "label": "Continue through the smoke because it is shorter",
+              "score": -2,
+              "feedback": "Smoke can quickly make escape unsafe. Do not choose a route known to be smoke-filled.",
+              "nextDecisionId": "o4"
+            },
+            {
+              "id": "unsure",
+              "label": "Pause in a safe place and follow the site's emergency instructions",
+              "score": 1,
+              "feedback": "Follow the site plan and instructions from trained personnel; do not enter a visibly unsafe route.",
+              "nextDecisionId": "o4"
+            }
+          ]
+        },
+        {
+          "id": "o4",
+          "title": "A closed door is between you and another route.",
+          "prompt": "You suspect the door may be hot. What is the better decision?",
+          "hint": "Do not open a door you suspect is hot or leads into smoke or fire. Seek a safe alternative and follow the site procedure.",
+          "options": [
+            {
+              "id": "avoid_hot_door",
+              "label": "Do not open it; choose another safe route or follow the site's trapped-person procedure",
+              "score": 2,
+              "feedback": "Correct: avoid opening a door suspected to be hot or unsafe.",
+              "nextDecisionId": "o5"
+            },
+            {
+              "id": "force_door",
+              "label": "Open it quickly and see what is on the other side",
+              "score": -2,
+              "feedback": "Opening a potentially hot or smoke-exposed door can expose you to danger.",
+              "nextDecisionId": "o5"
+            },
+            {
+              "id": "wait_near_door",
+              "label": "Wait beside the door without telling anyone",
+              "score": -1,
+              "feedback": "Move to the safest available option and communicate your situation according to the emergency plan.",
+              "nextDecisionId": "o5"
+            }
+          ]
+        },
+        {
+          "id": "o5",
+          "title": "You have reached the designated assembly point.",
+          "prompt": "What should happen after you get outside?",
+          "hint": "Stay at the assembly point, report missing people to the responsible person and do not re-enter.",
+          "options": [
+            {
+              "id": "assembly",
+              "label": "Remain at the assembly point and report any known missing person",
+              "score": 2,
+              "feedback": "Correct: help account for occupants and keep clear of emergency-service access.",
+              "nextDecisionId": "o6"
+            },
+            {
+              "id": "reenter",
+              "label": "Go back inside to find a colleague",
+              "score": -3,
+              "feedback": "Never re-enter a fire-affected building. Tell the fire service or responsible person who may be missing.",
+              "nextDecisionId": "o6"
+            },
+            {
+              "id": "leave_site",
+              "label": "Leave without checking in with the responsible person",
+              "score": -1,
+              "feedback": "Follow the site's assembly and headcount process so that missing people can be identified.",
+              "nextDecisionId": "o6"
+            }
+          ]
+        },
+        {
+          "id": "o6",
+          "title": "A colleague who may need evacuation assistance has not arrived.",
+          "prompt": "What is the safest response?",
+          "hint": "Tell the fire marshal or emergency services where the person was last seen. Follow the site's assisted-evacuation plan.",
+          "options": [
+            {
+              "id": "notify_marshal",
+              "label": "Tell the responsible marshal or emergency services and share the last known location",
+              "score": 2,
+              "feedback": "Correct: pass on information and let trained responders act under the evacuation plan.",
+              "nextDecisionId": null
+            },
+            {
+              "id": "reenter_colleague",
+              "label": "Re-enter and search for the colleague yourself",
+              "score": -3,
+              "feedback": "Do not re-enter. Give the information to trained responders.",
+              "nextDecisionId": null
+            },
+            {
+              "id": "ignore_missing",
+              "label": "Assume someone else will report it",
+              "score": -1,
+              "feedback": "Report relevant information promptly to the responsible person.",
+              "nextDecisionId": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blocked_exit",
+      "title": "Blocked Exit",
+      "description": "Respond to an escape route that is obstructed or affected by fire or smoke.",
+      "environment": "An office corridor where the usual exit is blocked; alternative exits and an assembly point are indicated.",
+      "learningNote": "Route choices must be checked against the real building emergency plan.",
+      "startDecisionId": "b1",
+      "decisions": [
+        {
+          "id": "b1",
+          "title": "Your usual exit is blocked by smoke and debris.",
+          "prompt": "What do you do?",
+          "hint": "Do not try to pass a route that is visibly unsafe. Look for a safe marked alternative from the premises plan.",
+          "options": [
+            {
+              "id": "alternate_exit",
+              "label": "Avoid the blocked route and use a safe, marked alternative",
+              "score": 2,
+              "feedback": "Correct: avoid the unsafe exit and follow the evacuation plan.",
+              "nextDecisionId": "b2"
+            },
+            {
+              "id": "push_through",
+              "label": "Push through the smoke and debris",
+              "score": -2,
+              "feedback": "Do not enter a route known to be unsafe.",
+              "nextDecisionId": "b2"
+            },
+            {
+              "id": "clear_blockage",
+              "label": "Try to remove the blockage before evacuating",
+              "score": -1,
+              "feedback": "Do not delay or put yourself at risk trying to clear a hazardous escape route.",
+              "nextDecisionId": "b2"
+            }
+          ]
+        },
+        {
+          "id": "b2",
+          "title": "The alarm is sounding, but some nearby people may not have noticed.",
+          "prompt": "What is appropriate if it is safe to do so?",
+          "hint": "Raise the alarm and alert people nearby while continuing to evacuate; do not delay or enter danger.",
+          "options": [
+            {
+              "id": "warn_and_leave",
+              "label": "Raise/confirm the alarm, alert nearby people if safe, and evacuate",
+              "score": 2,
+              "feedback": "Correct: warning others is appropriate when it does not expose you to additional danger.",
+              "nextDecisionId": "b3"
+            },
+            {
+              "id": "search_everywhere",
+              "label": "Search the whole floor before leaving",
+              "score": -2,
+              "feedback": "Do not delay evacuation to conduct a search unless you have a trained role and the procedure allows it safely.",
+              "nextDecisionId": "b3"
+            },
+            {
+              "id": "wait_instruction",
+              "label": "Wait indefinitely for someone else to make a decision",
+              "score": -1,
+              "feedback": "Follow the alarm and established evacuation procedure promptly.",
+              "nextDecisionId": "b3"
+            }
+          ]
+        },
+        {
+          "id": "b3",
+          "title": "Two possible routes are shown on the evacuation sign.",
+          "prompt": "How should you choose?",
+          "hint": "Choose a route that is known to be safe and available, following the premises plan and instructions from trained staff.",
+          "options": [
+            {
+              "id": "safe_marked",
+              "label": "Use the available marked route confirmed to be safe",
+              "score": 2,
+              "feedback": "Correct: select a safe available exit, not simply the shortest route.",
+              "nextDecisionId": "b4"
+            },
+            {
+              "id": "shortest_anyway",
+              "label": "Use the shortest route even though it is reported unsafe",
+              "score": -2,
+              "feedback": "Do not choose a known unsafe route because it is shorter.",
+              "nextDecisionId": "b4"
+            },
+            {
+              "id": "lift_blocked",
+              "label": "Take the normal lift to another floor",
+              "score": -2,
+              "feedback": "Use the fire evacuation plan; ordinary lifts are generally unsuitable during a fire.",
+              "nextDecisionId": "b4"
+            }
+          ]
+        },
+        {
+          "id": "b4",
+          "title": "Someone asks you to go back for their bag.",
+          "prompt": "What do you say?",
+          "hint": "Personal belongings should not delay evacuation.",
+          "options": [
+            {
+              "id": "leave_bag",
+              "label": "Ask them to leave it and continue evacuating",
+              "score": 2,
+              "feedback": "Correct: belongings are not worth delaying escape.",
+              "nextDecisionId": "b5"
+            },
+            {
+              "id": "fetch_bag",
+              "label": "Go back together to collect it",
+              "score": -2,
+              "feedback": "Do not re-enter or delay evacuation to collect property.",
+              "nextDecisionId": "b5"
+            },
+            {
+              "id": "argue",
+              "label": "Stay to argue about the bag",
+              "score": -1,
+              "feedback": "Keep moving toward safety and communicate calmly if it is safe to do so.",
+              "nextDecisionId": "b5"
+            }
+          ]
+        },
+        {
+          "id": "b5",
+          "title": "You are outside the building.",
+          "prompt": "Where should you go?",
+          "hint": "Use the designated assembly point and keep clear of emergency access routes.",
+          "options": [
+            {
+              "id": "assembly_point",
+              "label": "Go to the designated assembly point and check in",
+              "score": 2,
+              "feedback": "Correct: the assembly point supports an orderly headcount.",
+              "nextDecisionId": "b6"
+            },
+            {
+              "id": "near_entrance",
+              "label": "Wait directly at the entrance where fire crews need access",
+              "score": -1,
+              "feedback": "Keep clear of access routes and follow assembly-point instructions.",
+              "nextDecisionId": "b6"
+            },
+            {
+              "id": "leave_no_report",
+              "label": "Leave without reporting to anyone",
+              "score": -1,
+              "feedback": "Follow site headcount procedures and report any missing people.",
+              "nextDecisionId": "b6"
+            }
+          ]
+        },
+        {
+          "id": "b6",
+          "title": "A person may still be inside near the blocked exit.",
+          "prompt": "What information should you provide?",
+          "hint": "Give responders the person's last known location and any relevant details. Do not re-enter.",
+          "options": [
+            {
+              "id": "tell_responders",
+              "label": "Tell the marshal or fire service what you know",
+              "score": 2,
+              "feedback": "Correct: report information to trained responders and stay out of the building.",
+              "nextDecisionId": null
+            },
+            {
+              "id": "go_back",
+              "label": "Go back through the blocked exit to check",
+              "score": -3,
+              "feedback": "Never re-enter a fire-affected building to search.",
+              "nextDecisionId": null
+            },
+            {
+              "id": "say_nothing",
+              "label": "Say nothing because you are not certain",
+              "score": -1,
+              "feedback": "Share uncertainty honestly; responders can assess the information.",
+              "nextDecisionId": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "smoke_stairwell",
+      "title": "Smoke-Filled Stairwell",
+      "description": "Choose safe actions when smoke affects a stairwell or the usual evacuation route.",
+      "environment": "A multi-storey building where smoke is visible in a stairwell and a designated safe area or alternative route may be available.",
+      "learningNote": "The correct action depends on the premises plan, building design, and emergency-service instructions.",
+      "startDecisionId": "s1",
+      "decisions": [
+        {
+          "id": "s1",
+          "title": "You reach a stairwell and see smoke inside it.",
+          "prompt": "What should you do?",
+          "hint": "Do not deliberately enter a smoke-filled stairwell. Follow the site's emergency plan and seek a safe alternative.",
+          "options": [
+            {
+              "id": "avoid_smoke",
+              "label": "Avoid entering the smoke-filled stairwell and follow the safe alternative in the plan",
+              "score": 2,
+              "feedback": "Correct: do not enter a route known to be smoke-filled.",
+              "nextDecisionId": "s2"
+            },
+            {
+              "id": "enter_smoke",
+              "label": "Enter and hurry down through the smoke",
+              "score": -2,
+              "feedback": "Smoke can rapidly make the route untenable. Do not choose a known unsafe route.",
+              "nextDecisionId": "s2"
+            },
+            {
+              "id": "ordinary_lift",
+              "label": "Use the ordinary lift instead",
+              "score": -2,
+              "feedback": "Follow the premises fire plan; normal passenger lifts are generally not evacuation routes in a fire.",
+              "nextDecisionId": "s2"
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "title": "No immediately safe route is apparent.",
+          "prompt": "What is a safer next step?",
+          "hint": "Follow the building's trapped-person procedure. Depending on the plan, this may mean reaching a designated refuge/safe room, closing the door, and contacting emergency services.",
+          "options": [
+            {
+              "id": "follow_trapped_plan",
+              "label": "Follow the building's procedure for being unable to evacuate and contact emergency services",
+              "score": 2,
+              "feedback": "Correct: use the site's procedure and communicate your location rather than entering smoke.",
+              "nextDecisionId": "s3"
+            },
+            {
+              "id": "jump",
+              "label": "Jump from a window to escape",
+              "score": -3,
+              "feedback": "Do not jump. Move to a safer location if possible and call for help.",
+              "nextDecisionId": "s3"
+            },
+            {
+              "id": "hide_silently",
+              "label": "Hide without alerting anyone",
+              "score": -1,
+              "feedback": "Communicate your location to emergency services or responsible personnel when safe to do so.",
+              "nextDecisionId": "s3"
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "title": "You can make an emergency call or send an alert.",
+          "prompt": "What should you communicate?",
+          "hint": "Give your exact location, floor/room if known, the blocked or smoky route, and any immediate assistance needs.",
+          "options": [
+            {
+              "id": "call_location",
+              "label": "Contact emergency services and give your location and situation",
+              "score": 2,
+              "feedback": "Correct: clear location information helps responders find you.",
+              "nextDecisionId": "s4"
+            },
+            {
+              "id": "assume_called",
+              "label": "Assume someone else will have called",
+              "score": -1,
+              "feedback": "Do not assume. Contact emergency services if you can safely do so and follow local procedures.",
+              "nextDecisionId": "s4"
+            },
+            {
+              "id": "call_later",
+              "label": "Wait until the situation is worse before calling",
+              "score": -2,
+              "feedback": "Seek help promptly when you cannot safely evacuate.",
+              "nextDecisionId": "s4"
+            }
+          ]
+        },
+        {
+          "id": "s4",
+          "title": "You have reached a room designated by the site's emergency plan.",
+          "prompt": "What should you do while awaiting assistance?",
+          "hint": "Follow the site's emergency procedure and instructions from emergency services. Keep the door closed if the procedure calls for it.",
+          "options": [
+            {
+              "id": "follow_responder",
+              "label": "Follow the site's procedure, keep the location known, and follow dispatcher instructions",
+              "score": 2,
+              "feedback": "Correct: follow the established plan and keep communicating with responders.",
+              "nextDecisionId": "s5"
+            },
+            {
+              "id": "open_door_often",
+              "label": "Repeatedly open the door to check the corridor",
+              "score": -2,
+              "feedback": "Avoid exposing yourself to smoke; follow the emergency plan and responder instructions.",
+              "nextDecisionId": "s5"
+            },
+            {
+              "id": "move_unknown",
+              "label": "Move through an unknown smoky route without checking",
+              "score": -2,
+              "feedback": "Do not enter a route known or suspected to be unsafe.",
+              "nextDecisionId": "s5"
+            }
+          ]
+        },
+        {
+          "id": "s5",
+          "title": "You hear people outside and consider leaving through the window.",
+          "prompt": "What is the safer decision?",
+          "hint": "Do not jump. Follow the building's procedure and instructions from emergency services.",
+          "options": [
+            {
+              "id": "do_not_jump",
+              "label": "Do not jump; remain in the safest available place and signal your location",
+              "score": 2,
+              "feedback": "Correct: communicate your location and wait for safe assistance if no safe route is available.",
+              "nextDecisionId": "s6"
+            },
+            {
+              "id": "jump_now",
+              "label": "Jump to the ground",
+              "score": -3,
+              "feedback": "Jumping can cause serious injury. Do not jump; seek help.",
+              "nextDecisionId": "s6"
+            },
+            {
+              "id": "climb_out",
+              "label": "Climb out without knowing the drop or conditions",
+              "score": -3,
+              "feedback": "Do not attempt a dangerous improvised exit. Follow the emergency plan and responders.",
+              "nextDecisionId": "s6"
+            }
+          ]
+        },
+        {
+          "id": "s6",
+          "title": "Emergency responders are coordinating the evacuation.",
+          "prompt": "What should you do next?",
+          "hint": "Follow the official instructions and remain where responders can locate you unless they direct otherwise.",
+          "options": [
+            {
+              "id": "follow_official",
+              "label": "Follow responder instructions and keep others informed if safe",
+              "score": 2,
+              "feedback": "Correct: follow emergency-service instructions.",
+              "nextDecisionId": null
+            },
+            {
+              "id": "self_rescue",
+              "label": "Leave the safe location without telling responders",
+              "score": -2,
+              "feedback": "Do not move into an unsafe route or lose contact with responders without a safe plan.",
+              "nextDecisionId": null
+            },
+            {
+              "id": "reenter_building",
+              "label": "Go back into the building after reaching safety",
+              "score": -3,
+              "feedback": "Never re-enter a fire-affected building.",
+              "nextDecisionId": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

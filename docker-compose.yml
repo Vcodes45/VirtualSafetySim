@@ -1,0 +1,12 @@
+services:
+  virtual-safety:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      VIRTUAL_SAFETY_DATA_DIR: data
+      VIRTUAL_SAFETY_MODEL_PATH: models/cognitive_load_model.joblib
+    volumes:
+      - ./data/logs:/app/data/logs
+      - ./models:/app/models
+    restart: unless-stopped
